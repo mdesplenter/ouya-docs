@@ -2,47 +2,77 @@
 
 The [`Cordova`](https://cordova.apache.org/) engine provides a hardware-accelerated wrapper around HTML5.
 
-## Resources
+## Notes from mdesplenter
 
-* [Cordova Android Platform Guide](http://cordova.apache.org/docs/en/5.0.0/guide_platforms_android_index.md.html)
+Since the Ouya is an older Android system (2013) it's not possible to use the latest version of the development software. I added the version numbers and solutions to bugs you will encounter in 2022. I used Windows 10, because Construct 2 is a Windows application.
+Try to compile the example VirtualController, if that one works your project should work too.
 
-* [Cordova Command-Line-Interface Guide](http://cordova.apache.org/docs/en/5.0.0/guide_cli_index.md.html#The%20Command-Line%20Interface)
+## Software we need
 
-* [Cordova Android Plugins](http://cordova.apache.org/docs/en/5.0.0/guide_platforms_android_plugin.md.html#Android%20Plugins)
+* Java JDK 1.8.0_xx - I used Java SE Development Kit 8u202 which can be found here - https://www.oracle.com/nl/java/technologies/javase/javase8-archive-downloads.html
+* Node.js - https://nodejs.org/en/ - the 16.16 LTS version (have to check my laptop!)
+* Build tools - I used 25.2.3 - can be found here: https://dl.google.com/android/repository/tools_r25.2.3-macosx.zip (for mac). https://dl.google.com/android/repository/tools_r25.2.3-windows.zip (for windows)
+* SDK 16 and 22, can be installed using the build tools.
+* Cordova 6.4.0 - You will install it using node/npm
+* Crosswalk 2.0.1 - Install as a cordova plugin
+* Git https://git-scm.com/download/win
+* Visual Studio Code - Not really needed, but it makes it easier to do modifications to your project.
+
+
+## Install Java JDK 1.8
+
+1) Install JDK 1.8.0_202
+2) Add the paths in Environment Variables
+
+```
+Variable Name : JAVA_HOME
+Variable Value : C:\Program Files\Java\jdk1.8.0_202
+
+Variable Name : PATH 
+Variable Value : %JAVA_HOME%\bin
+```
 
 ## Cordova Command-Line Interface
 
-1) Before the `Cordova` projects can be created, be sure to install the [`Cordova` Command-Line Interface](http://cordova.apache.org/docs/en/5.0.0/guide_cli_index.md.html#The%20Command-Line%20Interface).
+1) Install Node.js
 
-2) Install [`Node.js`](https://nodejs.org/).
+2) Install Git
 
-On Windows, `Node.js` can be installed from an `MSI` installer and be sure to add 'Node and npm' to the path.
-
-![Node.js installer](cordova/image_3.png)
-
-3) Be sure to install a `GIT` source-control client. `Cordova` will report errors if `git` is missing from the path.
-
-![Missing git](cordova/image_5.png)
-
-4) Open a new terminal to install `Cordova` globally.
+3) Open a new terminal (in Windows cmd) to install `Cordova` globally.
 
 On Mac:
 
 ```
-sudo npm install -g cordova
+sudo npm install -g cordova@6.4.0
 ```
 
 On Windows:
 
 ```
-npm install -g cordova
+npm install -g cordova@6.4.0
 ```
 
-![Install Cordova](cordova/image_4.png)
+4) Download the Build tools, and export the tools folder to C:\android (it's easier to keep this together).
+5) Open a new terminal (in Windows cmd), and start the SDK manager:
+
+```
+c:\android\tools\android
+```
+
+6) Install the following packages, don't update!
+
+* SDK build tools - install the latest
+* SDK platforms for API 16: Android 4.1 (Jelly Bean) and API 21: Android 5.0 (Lollipop).
+* Install the Extras\Android Support Library, Android Support Repository and Google USB Driver.
+
+7) Add the Environment Variables in Windows 10 (More info in the [setup.md](https://github.com/mdesplenter/docs-construct2/blob/master/setup.md#adb))
+
+```
+Path:  C:\android\tools;C:\android\platform-tools;
+```
+
 
 ## Examples
-
-* Be sure to update to the latest version of `Android Studio`.
 
 ### Virtual Controller
 
@@ -59,7 +89,8 @@ cordova create VirtualController tv.ouya.examples.cordova.virtualcontroller Virt
 2) `Android` support is added to the `Cordova` project with the following command-line from the `Cordova/VirtualController` folder.
 
 ```
-cordova platform add android
+cd VirtualController
+cordova platform add android@4.1.1
 ```
 
 3) Use the `Cordova` command-line to add the `cordova-plugin-ouya-sdk` plugin.
@@ -74,7 +105,13 @@ cordova plugin add https://github.com/ouya/cordova-plugin-ouya-sdk.git#master
 cordova run android
 ```
 
-5) Manually copy `plugins\cordova-plugin-ouya-sdk\src\android\MainActivity.java` to `platforms\android\src\tv\ouya\examples\cordova\virtualcontroller\MainActivity.java` and edit the package name to be `tv.ouya.examples.cordova.virtualcontroller`. `Cordova` auto-configs cannot replace `XML` nodes making this manual one-off [necessary](https://cordova.apache.org/docs/en/latest/plugin_ref/spec.html#config-file-element).
+5) Propably you get an error that Gradle isn't working. It needs two edits:
+
+* In your VirtualController folder, search for 'services.gradle'. Change the http to https.
+* Go to you c:\android\tools\templates folder. Copy the gradle folder.
+* Go to c:\android\platforms. You see the 2 SDK folders. Paste the gradle folder in both templates folders within.
+
+6) Manually copy `plugins\cordova-plugin-ouya-sdk\src\android\MainActivity.java` to `platforms\android\src\tv\ouya\examples\cordova\virtualcontroller\MainActivity.java` and edit the package name to be `tv.ouya.examples.cordova.virtualcontroller`. `Cordova` auto-configs cannot replace `XML` nodes making this manual one-off [necessary](https://cordova.apache.org/docs/en/latest/plugin_ref/spec.html#config-file-element).
 
 ```
 package tv.ouya.examples.cordova.virtualcontroller;
@@ -98,7 +135,17 @@ public class MainActivity extends CordovaActivity
 }
 ```
 
-6) Replace the `Cordova\VirtualController\www` content folder with the [Virtual Controller example HTML5](https://github.com/ouya/ouya-sdk-examples/tree/master/Cordova/VirtualController/www) so that the `cordova run android` command will embed the files into the `Android` platform.
+7) Connect your Ouya using adb. 
+
+8) Build the app again.
+
+```
+cordova run android
+```
+
+9) After building, it should show the cordova splash screen on the Ouya. Now add your own app.
+
+10) Replace the `Cordova\VirtualController\www` content folder with the [Virtual Controller example HTML5](https://github.com/ouya/ouya-sdk-examples/tree/master/Cordova/VirtualController/www) so that the `cordova run android` command will embed the files into the `Android` platform.
 
 ```
 a.png
@@ -122,66 +169,31 @@ u.png
 y.png
 ```
 
-7) `Cordova` projects can import into Android Studio as a `Gradle` project.
-
-![Import Android Studio](cordova/image_6.png)
-
-8) The example project can be imported from the `Cordova/VirtualController/platforms/android` folder.
-
-![Import IAP](cordova/image_8.png)
-
-9) Customize the `AndroidManifest.xml` to include the [leanback-icon](forge_tv.md#user-content-icons). Cordova requires a target version of `22`.
-
-```
-<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22" />
-```
-
-### In-App-Purchases
-
-The [In-App-Purchases](https://github.com/ouya/ouya-sdk-examples/tree/master/Cordova/InAppPurchases) example shows making purchases, checking receipts, adjusting the safe area, and exiting the app.
-
-![image_1.png](cordova/image_2.png)
-
-
-1) The initial `InAppPurchases` project was created with the command-line from the `Cordova` folder.
-
-```
-cordova create InAppPurchases tv.ouya.examples.cordova.inapppurchases InAppPurchases
-```
-
-2) `Android` support is added to the `Cordova` project with the following command-line from the `Cordova/InAppPurchases` folder.
-
-```
-cordova platform add android
-```
-
-3) Use the `Cordova` command-line to add the `cordova-plugin-ouya-sdk` plugin.
-
-```
-cordova plugin add https://github.com/ouya/cordova-plugin-ouya-sdk.git#master
-```
-
-4) To build and run the `In-App-Purchases Example` run the following command from the `Cordova/InAppPurchases` folder.
+11) Build the app again.
 
 ```
 cordova run android
 ```
 
-5) Manually copy `plugins\cordova-plugin-ouya-sdk\src\android\MainActivity.java` to `platforms\android\src\tv\ouya\examples\cordova\inapppurchases\MainActivity.java` and edit the package name to be `tv.ouya.examples.cordova.inapppurchases`. `Cordova` auto-configs cannot replace `XML` nodes making this manual one-off [necessary](https://cordova.apache.org/docs/en/latest/plugin_ref/spec.html#config-file-element).
+
+
+# Extra #
+
+
+1) Customize the `AndroidManifest.xml` to include the [leanback-icon](forge_tv.md#user-content-icons). Cordova requires a target version of `22`.
 
 ```
-package tv.ouya.examples.cordova.inapppurchases;
+<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22" />
 ```
 
-6) The example [`HTML5` contents](https://github.com/ouya/ouya-sdk-examples/blob/master/Cordova/InAppPurchases/www/index.html) are placed within the `Cordova\InAppPurchases\www` folder so that the above command will copy the files to the `Android` platform.
+2) Want to add crosswalk? Go into your project, and add it as a plugin. It should automaticly install the latest possible for android 4.1
 
-7) `Cordova` projects can import into Android Studio as a `Gradle` project.
+```
+cordova plugin add cordova-plugin-crosswalk-webview
+```
 
-![Import Android Studio](cordova/image_6.png)
 
-8) The example project can be imported from the `Cordova/InAppPurchases/platforms/android` folder.
 
-![Import IAP](cordova/image_7.png)
 
 # API #
 
