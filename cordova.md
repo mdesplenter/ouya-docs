@@ -10,7 +10,7 @@ Try to compile the example VirtualController, if that one works your project sho
 ## Software we need
 
 * Java JDK 1.8.0_xx - I used Java SE Development Kit 8u202 which can be found here - https://www.oracle.com/nl/java/technologies/javase/javase8-archive-downloads.html
-* Node.js - https://nodejs.org/en/ - the 16.16 LTS version (have to check my laptop!)
+* Node.js - https://nodejs.org/en/ - 12.13.0 (later may also work, like 16)
 * Build tools - I used 25.2.3 - can be found here: https://dl.google.com/android/repository/tools_r25.2.3-macosx.zip (for mac). https://dl.google.com/android/repository/tools_r25.2.3-windows.zip (for windows)
 * SDK 16 and 22, can be installed using the build tools.
 * Cordova 6.4.0 - You will install it using node/npm
@@ -68,7 +68,10 @@ c:\android\tools\android
 7) Add the Environment Variables in Windows 10 (More info in the [setup.md](https://github.com/mdesplenter/docs-construct2/blob/master/setup.md#adb))
 
 ```
-Path:  C:\android\tools;C:\android\platform-tools;
+ANDROID_HOME      c:\android
+ANDROID_SDK_ROOT  c:\android
+
+Path: %ANDROID_HOME%\tools;%ANDROID_HOME%\platforms;
 ```
 
 
