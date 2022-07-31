@@ -10,12 +10,12 @@ Try to compile the example VirtualController, if that one works your project sho
 ## Software we need
 
 * Java JDK 1.8.0_xx - I used Java SE Development Kit 8u202 which can be found here - https://www.oracle.com/nl/java/technologies/javase/javase8-archive-downloads.html
-* Node.js - https://nodejs.org/en/ - 12.13.0 (later may also work, like 16)
+* Node.js - [https://nodejs.org/en/](https://nodejs.org/es/blog/release/v12.13.0/) - 12.13.0
 * Build tools - I used 25.2.3 - can be found here: https://dl.google.com/android/repository/tools_r25.2.3-macosx.zip (for mac). https://dl.google.com/android/repository/tools_r25.2.3-windows.zip (for windows)
 * SDK 16 and 22, can be installed using the build tools.
 * Cordova 6.4.0 - You will install it using node/npm
 * Crosswalk 2.0.1 - Install as a cordova plugin
-* Git https://git-scm.com/download/win
+* Git - https://git-scm.com/download/win
 * Visual Studio Code - Not really needed, but it makes it easier to do modifications to your project.
 
 
@@ -38,15 +38,7 @@ Variable Value : %JAVA_HOME%\bin
 
 2) Install Git
 
-3) Open a new terminal (in Windows cmd) to install `Cordova` globally.
-
-On Mac:
-
-```
-sudo npm install -g cordova@6.4.0
-```
-
-On Windows:
+3)  Open a new terminal (in Windows cmd) to install `Cordova` globally.
 
 ```
 npm install -g cordova@6.4.0
@@ -62,16 +54,26 @@ c:\android\tools\android
 6) Install the following packages, don't update!
 
 * SDK build tools - install the latest
-* SDK platforms for API 16: Android 4.1 (Jelly Bean) and API 21: Android 5.0 (Lollipop).
-* Install the Extras\Android Support Library, Android Support Repository and Google USB Driver.
+* SDK platforms for API 16: Android 4.1.2 (Jelly Bean) and API 22: Android 5.1.1
+* Install the Extras Android Support Repository and Google USB Driver.
 
-7) Add the Environment Variables in Windows 10 (More info in the [setup.md](https://github.com/mdesplenter/docs-construct2/blob/master/setup.md#adb))
+7) Add the Environment Variables in Windows 10 (More info in the [setup.md](https://github.com/ouya-saviors/docs/blob/master/setup.md#adb)
 
 ```
-ANDROID_HOME      c:\android
-ANDROID_SDK_ROOT  c:\android
+Variable Name : ANDROID_HOME
+Variable Value : c:\android
 
-Path: %ANDROID_HOME%\tools;%ANDROID_HOME%\platforms;
+Variable Name : ANDROID_SDK_ROOT
+Variable Value : c:\android
+
+Variable Name : PATH 
+Variable Value : %ANDROID_HOME%\tools
+
+Variable Name : PATH 
+Variable Value : %ANDROID_HOME%\platforms;
+
+Variable Name : PATH 
+Variable Value : %ANDROID_HOME%\platform-tools
 ```
 
 
